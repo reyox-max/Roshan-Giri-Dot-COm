@@ -1,94 +1,5 @@
 (function () {
-  var introLayer = document.querySelector(".site-intro");
-  var introVideo = introLayer && introLayer.querySelector("video");
-  var introFinished = false;
-  var heroStage = document.querySelector(".hero-stage");
-  var openedAtHero =
-    window.location.hash === "#home" ||
-    (!window.location.hash &&
-      window.scrollY < (heroStage ? heroStage.offsetHeight : window.innerHeight));
-
-  function revealHero() {
-    if (introFinished) {
-      return;
-    }
-    introFinished = true;
-    document.body.classList.remove("intro-pending");
-    if (introLayer) {
-      introLayer.remove();
-    }
-    document.body.classList.add("intro-complete");
-  }
-
-  if (introVideo && openedAtHero) {
-    var introEndTime = 4.5;
-    var fadeStartTime = 4;
-    function updateIntroFade() {
-      if (introVideo.currentTime >= fadeStartTime) {
-        var fadeProgress = Math.min(
-          1,
-          (introVideo.currentTime - fadeStartTime) /
-            (introEndTime - fadeStartTime)
-        );
-        introVideo.style.opacity = String(1 - fadeProgress * fadeProgress);
-      }
-      if (introVideo.currentTime >= introEndTime) {
-        introVideo.style.opacity = "0";
-        introVideo.pause();
-        window.requestAnimationFrame(function () {
-          window.requestAnimationFrame(revealHero);
-        });
-        return;
-      }
-      if (!introVideo.ended && !introVideo.paused) {
-        window.requestAnimationFrame(updateIntroFade);
-      }
-    }
-    introVideo.addEventListener(
-      "ended",
-      function () {
-        introVideo.style.opacity = "0";
-        window.requestAnimationFrame(function () {
-          window.requestAnimationFrame(revealHero);
-        });
-      },
-      { once: true }
-    );
-    function failIntro(error) {
-      if (introFinished) {
-        return;
-      }
-      console.warn("Unable to prepare or play the site intro.", error);
-      revealHero();
-    }
-    introVideo.addEventListener(
-      "error",
-      function () {
-        failIntro(introVideo.error);
-      },
-      { once: true }
-    );
-    var sceneImages = Array.prototype.slice.call(
-      document.querySelectorAll(".hero__sky, .hero__landscape")
-    );
-    Promise.all(
-      sceneImages.map(function (image) {
-        return image.decode();
-      })
-    )
-      .then(function () {
-        if (introVideo.duration > introEndTime) {
-          introVideo.currentTime = 0;
-        }
-        return introVideo.play();
-      })
-      .then(function () {
-        window.requestAnimationFrame(updateIntroFade);
-      })
-      .catch(failIntro);
-  } else {
-    revealHero();
-  }
+  document.body.classList.add("intro-complete");
 
   var fireflyHost = document.querySelector(".hero__fireflies");
   var fireflies = [
@@ -368,7 +279,7 @@
 
   function getTransitionDistance(index) {
     var interval = sectionStops[index + 1] - sectionStops[index];
-    return Math.max(1, interval * 0.94);
+    return Math.max(1, interval * 0.6);
   }
 
   function easeProgress(progress) {

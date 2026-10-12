@@ -54,37 +54,6 @@ body {
   overflow-x: hidden;
 }
 
-body.intro-pending {
-  overflow: hidden;
-}
-
-.site-intro {
-  position: fixed;
-  z-index: 100;
-  inset: 0;
-  overflow: hidden;
-  background: transparent;
-  pointer-events: none;
-}
-
-.site-intro__video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 1;
-}
-
-body.intro-pending .hero__aircraft-wrap,
-body.intro-pending .hero__shade,
-body.intro-pending .hero__stars,
-body.intro-pending .hero__copy > *,
-body.intro-pending .hero__cards > *,
-body.intro-pending .hero__fireflies,
-body.intro-pending .hero__scroll-cue {
-  animation: none !important;
-  opacity: 0;
-}
-
 body.intro-complete .hero__shade {
   animation: hero-fade-in 800ms ease-out 150ms both;
 }
@@ -123,6 +92,12 @@ img {
 a,
 button {
   -webkit-tap-highlight-color: transparent;
+  transition: filter 180ms ease;
+}
+
+a:hover,
+button:hover {
+  filter: brightness(0.92);
 }
 
 a:focus-visible,
@@ -710,6 +685,7 @@ body.has-scrolled .hero {
 
 .about-section {
   z-index: 1;
+  margin-bottom: calc(var(--panel-bottom-gap) - clamp(80px, 18svh, 160px));
   padding: clamp(16px, 2.5vh, 24px) 0;
   overflow-y: auto;
   scrollbar-width: none;
@@ -930,6 +906,7 @@ body.has-scrolled .hero {
   border-radius: 999px;
   background: #bababa;
   cursor: pointer;
+  transition: background-color 180ms ease, filter 180ms ease;
 }
 
 .project-progress button.is-active {
@@ -1288,7 +1265,7 @@ body.has-scrolled .hero {
 
 .project-card__details a {
   border-radius: 7px;
-  transition: transform 180ms ease;
+  transition: filter 180ms ease, transform 180ms ease;
 }
 
 .project-card__details a:hover {
@@ -1487,7 +1464,7 @@ body.has-scrolled .hero {
 }
 
 .social-links a {
-  transition: transform 160ms ease;
+  transition: filter 180ms ease, transform 160ms ease;
 }
 
 .social-links a:hover {
