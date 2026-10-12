@@ -36,6 +36,26 @@
 
   document.body.classList.add("intro-complete");
 
+  var cvViewer = document.querySelector("#cv-viewer");
+  var cvOpenButton = document.querySelector(".navigate-link");
+  var cvCloseButton = document.querySelector(".cv-viewer__close");
+
+  if (cvViewer && cvOpenButton && cvCloseButton) {
+    cvOpenButton.addEventListener("click", function () {
+      cvViewer.showModal();
+    });
+
+    cvCloseButton.addEventListener("click", function () {
+      cvViewer.close();
+    });
+
+    cvViewer.addEventListener("click", function (event) {
+      if (event.target === cvViewer) {
+        cvViewer.close();
+      }
+    });
+  }
+
   var aboutDetails = document.querySelector(".about-section__details");
   var aboutSubtitle = document.querySelector("#about-subtitle");
   var aboutCopy = document.querySelector(".about-section__copy");
