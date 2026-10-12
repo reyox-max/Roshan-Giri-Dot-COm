@@ -504,6 +504,135 @@
   }
   reducedMotion.addEventListener("change", updateStackedSectionState);
 
+  var wheelDelta = 0;
+  var wheelGestureTimer = 0;
+  var wheelUnlockTimer = 0;
+  var wheelNavigationLocked = false;
+  var wheelLockUntil = 0;
+
+  function canScrollNestedElement(target, deltaY) {
+    var element = target && target.nodeType === 1 ? target : null;
+
+    while (
+      element &&
+      element !== document.body &&
+      element !== document.documentElement
+    ) {
+      var overflowY = window.getComputedStyle(element).overflowY;
+      if (
+        (overflowY === "auto" || overflowY === "scroll") &&
+        element.scrollHeight > element.clientHeight
+      ) {
+        if (
+          (deltaY > 0 &&
+            element.scrollTop + element.clientHeight < element.scrollHeight - 1) ||
+          (deltaY < 0 && element.scrollTop > 0)
+        ) {
+          return true;
+        }
+      }
+      element = element.parentElement;
+    }
+
+    return false;
+  }
+
+  function getWheelScrollStops() {
+    return [0].concat(
+      stackedSections.map(function (section, index) {
+        var stop = sectionStops[index];
+        if (index > 0) {
+          stop += getTransitionDistance(index - 1);
+        }
+        return stop;
+      })
+    );
+  }
+
+  function scheduleWheelUnlock() {
+    window.clearTimeout(wheelUnlockTimer);
+    wheelUnlockTimer = window.setTimeout(function () {
+      if (Date.now() < wheelLockUntil) {
+        scheduleWheelUnlock();
+        return;
+      }
+      wheelNavigationLocked = false;
+      wheelDelta = 0;
+    }, Math.max(220, wheelLockUntil - Date.now()));
+  }
+
+  window.addEventListener("scrollend", function () {
+    if (!wheelNavigationLocked) {
+      return;
+    }
+    wheelLockUntil = Date.now() + 220;
+    scheduleWheelUnlock();
+  });
+
+  document.addEventListener(
+    "wheel",
+    function (event) {
+      if (
+        event.ctrlKey ||
+        event.deltaY === 0 ||
+        (event.target.closest &&
+          event.target.closest("dialog[open]")) ||
+        canScrollNestedElement(event.target, event.deltaY)
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+
+      if (wheelNavigationLocked) {
+        wheelLockUntil = Math.max(wheelLockUntil, Date.now() + 220);
+        scheduleWheelUnlock();
+        return;
+      }
+
+      wheelDelta += event.deltaY;
+      window.clearTimeout(wheelGestureTimer);
+      wheelGestureTimer = window.setTimeout(function () {
+        var direction = wheelDelta > 0 ? 1 : wheelDelta < 0 ? -1 : 0;
+        wheelDelta = 0;
+        if (!direction) {
+          return;
+        }
+
+        var stops = getWheelScrollStops();
+        var currentPosition = window.scrollY;
+        var targetPosition = null;
+        if (direction > 0) {
+          targetPosition = stops.find(function (stop) {
+            return stop > currentPosition + 2;
+          });
+        } else {
+          for (var index = stops.length - 1; index >= 0; index -= 1) {
+            if (stops[index] < currentPosition - 2) {
+              targetPosition = stops[index];
+              break;
+            }
+          }
+        }
+
+        if (targetPosition === undefined || targetPosition === null) {
+          return;
+        }
+
+        wheelNavigationLocked = true;
+        wheelLockUntil = Date.now() + (reducedMotion.matches ? 220 : 3000);
+        scheduleWheelUnlock();
+        window.requestAnimationFrame(function () {
+          window.scrollTo({
+            top: targetPosition,
+            behavior: reducedMotion.matches ? "auto" : "smooth",
+          });
+        });
+      }, 80);
+    },
+    { passive: false }
+  );
+
   document.addEventListener("click", function (event) {
     var link =
       event.target.closest && event.target.closest('a[href^="#"]');
