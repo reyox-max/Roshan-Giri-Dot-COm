@@ -1,4 +1,39 @@
 (function () {
+  var imageConnection =
+    navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+
+  function useLowResolutionImages() {
+    if (!imageConnection) {
+      return false;
+    }
+
+    return (
+      imageConnection.saveData ||
+      /^(slow-2g|2g|3g)$/.test(imageConnection.effectiveType || "") ||
+      (typeof imageConnection.downlink === "number" &&
+        imageConnection.downlink < 1.5)
+    );
+  }
+
+  function updateImageSources() {
+    var lowResolution = useLowResolutionImages();
+    document
+      .querySelectorAll("img[data-high-res][data-low-res]")
+      .forEach(function (image) {
+        var source = lowResolution
+          ? image.dataset.lowRes
+          : image.dataset.highRes;
+        if (image.getAttribute("src") !== source) {
+          image.src = source;
+        }
+      });
+  }
+
+  updateImageSources();
+  if (imageConnection && imageConnection.addEventListener) {
+    imageConnection.addEventListener("change", updateImageSources);
+  }
+
   document.body.classList.add("intro-complete");
 
   var fireflyHost = document.querySelector(".hero__fireflies");
@@ -189,53 +224,6 @@
     },
   ];
 
-  stackedSections.slice(0, 2).forEach(function (section) {
-    if (!section.element) {
-      return;
-    }
-
-    section.element.addEventListener(
-      "wheel",
-      function (event) {
-        if (event.deltaY === 0 || event.ctrlKey) {
-          return;
-        }
-
-        var delta = event.deltaY;
-        if (event.deltaMode === 1) {
-          delta *=
-            Number.parseFloat(
-              window.getComputedStyle(section.element).lineHeight
-            ) || 16;
-        } else if (event.deltaMode === 2) {
-          delta *= section.element.clientHeight;
-        }
-
-        var maxScroll =
-          section.element.scrollHeight - section.element.clientHeight;
-        if (maxScroll <= 0) {
-          return;
-        }
-
-        var scrollRemaining =
-          delta > 0
-            ? maxScroll - section.element.scrollTop
-            : section.element.scrollTop;
-        if (Math.abs(delta) <= scrollRemaining) {
-          return;
-        }
-
-        event.preventDefault();
-        section.element.scrollTop = delta > 0 ? maxScroll : 0;
-        window.scrollBy({
-          top: delta > 0 ? delta - scrollRemaining : delta + scrollRemaining,
-          behavior: "instant",
-        });
-      },
-      { passive: false }
-    );
-  });
-
   var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   var sectionStops = [];
   var scrollFrame = 0;
@@ -279,7 +267,7 @@
 
   function getTransitionDistance(index) {
     var interval = sectionStops[index + 1] - sectionStops[index];
-    return Math.max(1, interval * 0.6);
+    return Math.max(1, interval * 0.24);
   }
 
   function easeProgress(progress) {
@@ -350,6 +338,13 @@
     updateStackedSectionState();
     updateActiveNavigation();
   });
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () {
+      updateSectionStops();
+      updateStackedSectionState();
+      updateActiveNavigation();
+    });
+  }
   reducedMotion.addEventListener("change", updateStackedSectionState);
 
   document.addEventListener("click", function (event) {
@@ -408,7 +403,11 @@
     var activeIndex = 0;
 
     for (var index = 1; index < navSections.length; index += 1) {
-      if (window.scrollY >= sectionStops[index - 1]) {
+      var transitionEnd = sectionStops[index - 1];
+      if (index > 1) {
+        transitionEnd += getTransitionDistance(index - 2);
+      }
+      if (window.scrollY + 1 >= transitionEnd) {
         activeIndex = index;
       }
     }

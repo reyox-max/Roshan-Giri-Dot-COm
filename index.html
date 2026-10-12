@@ -9,8 +9,6 @@
     />
     <meta name="theme-color" content="#0a1024" />
     <title>Roshan Giri | Portfolio</title>
-    <link rel="preload" as="image" href="assets/background.png" />
-    <link rel="preload" as="image" href="assets/ForeGround.png" />
     <link rel="stylesheet" href="styles.css" />
     <script src="script.js" defer></script>
   </head>
@@ -30,7 +28,13 @@
       <div class="hero-stage" id="home">
         <section class="hero" aria-labelledby="hero-title">
           <div class="hero__scene" aria-hidden="true">
-            <img class="hero__sky" src="assets/background.png" alt="" />
+            <img
+              class="hero__sky"
+              data-high-res="assets/background.png"
+              data-low-res="assets/background-lowres.png"
+              alt=""
+              fetchpriority="high"
+            />
             <div class="hero__aircraft-wrap">
               <img class="hero__aircraft" src="assets/hero-aircraft.png" alt="" />
             </div>
@@ -54,9 +58,11 @@
           </div>
           <img
             class="hero__landscape"
-            src="assets/ForeGround.png"
+            data-high-res="assets/ForeGround.png"
+            data-low-res="assets/foreground-lowres.png"
             alt=""
             aria-hidden="true"
+            fetchpriority="high"
           />
           <div class="hero__shade" aria-hidden="true"></div>
           <div class="hero__stars" aria-hidden="true">
@@ -127,24 +133,32 @@
                 development — turning wireframes into pixel-perfect,
                 responsive realities.
               </p>
-              <dl class="about-section__stats">
-                <div>
-                  <dt>Projects</dt>
-                  <dd>20+</dd>
-                </div>
-                <div>
-                  <dt>Experience</dt>
-                  <dd>3 Yrs</dd>
-                </div>
-                <div>
-                  <dt>Clients</dt>
-                  <dd>15+</dd>
-                </div>
-                <div>
-                  <dt>Awards</dt>
-                  <dd>5</dd>
-                </div>
-              </dl>
+              <nav class="about-section__info-cards" aria-label="More about Roshan">
+                <a class="about-info-card" href="education.html">
+                  <span class="about-info-card__title">Education</span>
+                  <strong>4th Year Aerospace Undergraduate</strong>
+                  <span class="about-info-card__summary">IOE Pulchowk Campus</span>
+                  <span class="about-info-card__arrow" aria-hidden="true">↗</span>
+                </a>
+                <a class="about-info-card" href="work.html">
+                  <span class="about-info-card__title">Currently</span>
+                  <strong>Student</strong>
+                  <span class="about-info-card__summary">Looking for opportunities</span>
+                  <span class="about-info-card__arrow" aria-hidden="true">↗</span>
+                </a>
+                <a class="about-info-card" href="skills.html">
+                  <span class="about-info-card__title">Skills</span>
+                  <strong>CAD &amp; Graphics</strong>
+                  <span class="about-info-card__summary">Explore more skills</span>
+                  <span class="about-info-card__arrow" aria-hidden="true">↗</span>
+                </a>
+                <a class="about-info-card" href="interests.html">
+                  <span class="about-info-card__title">Interests</span>
+                  <strong>Aircraft &amp; Spacecraft</strong>
+                  <span class="about-info-card__summary">Explore more interests</span>
+                  <span class="about-info-card__arrow" aria-hidden="true">↗</span>
+                </a>
+              </nav>
             </div>
           </div>
         </div>
@@ -267,8 +281,10 @@
           <img class="footer__hills" src="assets/footer-hills.png" alt="" />
           <img
             class="footer__foreground"
-            src="assets/footer_foreground.png"
+            data-high-res="assets/footer_foreground.png"
+            data-low-res="assets/footer-foreground-lowres.png"
             alt=""
+            loading="lazy"
           />
           <div class="footer__message">
             <span>Thank You for</span>
