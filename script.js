@@ -36,6 +36,143 @@
 
   document.body.classList.add("intro-complete");
 
+  var aboutDetails = document.querySelector(".about-section__details");
+  var aboutSubtitle = document.querySelector("#about-subtitle");
+  var aboutCopy = document.querySelector(".about-section__copy");
+  var aboutExpandedView = document.querySelector(
+    "#about-expanded-content"
+  );
+  var aboutCardButtons = Array.prototype.slice.call(
+    document.querySelectorAll(".about-info-card[data-about-card]")
+  );
+  var aboutInformation = {
+    education: {
+      title: "Education",
+      cards: [
+        {
+          title: "Current study",
+          description: "4th Year Aerospace Engineering Undergraduate",
+        },
+        {
+          title: "Campus",
+          description: "IOE Pulchowk Campus",
+        },
+      ],
+    },
+    currently: {
+      title: "Currently",
+      cards: [
+        {
+          title: "Current role",
+          description: "Aerospace Engineering student",
+        },
+        {
+          title: "Open to",
+          description: "Relevant opportunities, collaboration, and new challenges.",
+        },
+      ],
+    },
+    skills: {
+      title: "Skills",
+      cards: [
+        {
+          title: "CAD",
+          description: "Computer-aided design for exploring and communicating ideas.",
+        },
+        {
+          title: "Graphics",
+          description: "Graphic design and visual composition.",
+        },
+        {
+          title: "Web design",
+          description: "Modern, responsive websites with attention to detail.",
+        },
+        {
+          title: "Interactive interfaces",
+          description: "Design and development for engaging interfaces.",
+        },
+      ],
+    },
+    interests: {
+      title: "Interests",
+      cards: [
+        {
+          title: "Aircraft",
+          description: "Flight, aircraft design, and the ideas behind aviation.",
+        },
+        {
+          title: "Spacecraft",
+          description: "Space vehicles and the engineering behind exploration.",
+        },
+      ],
+    },
+  };
+  function renderAboutInformation(information) {
+    aboutExpandedView.replaceChildren();
+    information.cards.forEach(function (card) {
+      var element = document.createElement("article");
+      var heading = document.createElement("h4");
+      var description = document.createElement("p");
+
+      element.className = "about-expanded-card";
+      heading.textContent = card.title;
+      description.textContent = card.description;
+      element.append(heading, description);
+      aboutExpandedView.appendChild(element);
+    });
+  }
+
+  if (
+    aboutDetails &&
+    aboutSubtitle &&
+    aboutCopy &&
+    aboutExpandedView &&
+    aboutCardButtons.length
+  ) {
+    aboutCardButtons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        var information = aboutInformation[button.dataset.aboutCard];
+        var isAlreadyOpen =
+          button.getAttribute("aria-expanded") === "true";
+
+        if (!information) {
+          return;
+        }
+
+        aboutCardButtons.forEach(function (cardButton) {
+          cardButton.classList.remove("is-active");
+          cardButton.setAttribute("aria-expanded", "false");
+          cardButton.querySelector(
+            ".about-info-card__arrow"
+          ).textContent = "↗";
+        });
+
+        if (isAlreadyOpen) {
+          aboutDetails.classList.remove("is-expanded");
+          aboutDetails.closest(".about-section").classList.remove(
+            "is-about-expanded"
+          );
+          aboutCopy.setAttribute("aria-hidden", "false");
+          aboutExpandedView.setAttribute("aria-hidden", "true");
+          aboutSubtitle.textContent = "About Me";
+          return;
+        }
+
+        button.classList.add("is-active");
+        button.setAttribute("aria-expanded", "true");
+        button.querySelector(".about-info-card__arrow").textContent = "×";
+        aboutSubtitle.textContent = information.title;
+        aboutCopy.setAttribute("aria-hidden", "true");
+        aboutExpandedView.setAttribute("aria-hidden", "false");
+        aboutDetails.classList.add("is-expanded");
+        aboutDetails.closest(".about-section").classList.add(
+          "is-about-expanded"
+        );
+        renderAboutInformation(information);
+      });
+    });
+  }
+
   var fireflyHost = document.querySelector(".hero__fireflies");
   var fireflies = [
     ["8%", "76%", "-1.2s", "6.2s", "3px"],
