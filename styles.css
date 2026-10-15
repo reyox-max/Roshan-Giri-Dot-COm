@@ -78,29 +78,10 @@
 
 
 html,
-
 body {
-
   min-width: 320px;
-
   min-height: 100%;
-
   margin: 0;
-
-  scrollbar-width: none;
-
-  -ms-overflow-style: none;
-
-}
-
-
-
-html::-webkit-scrollbar,
-
-body::-webkit-scrollbar {
-
-  display: none;
-
 }
 
 
