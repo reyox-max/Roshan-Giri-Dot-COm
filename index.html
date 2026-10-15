@@ -42,6 +42,17 @@
       </button>
     </header>
 
+    <div
+      class="page-progress"
+      role="progressbar"
+      aria-label="Page scroll progress"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-valuenow="0"
+    >
+      <span aria-hidden="true"></span>
+    </div>
+
     <main>
       <div class="hero-stage" id="home">
         <section class="hero" aria-labelledby="hero-title">
@@ -118,7 +129,15 @@
             href="#about"
             aria-label="Scroll to introduction"
           >
-            <img src="assets/scroll-icon.svg" alt="" />
+            <svg
+              class="hero__scroll-cue-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M12 4v15m-6-6 6 6 6-6" />
+            </svg>
+            <span>Scroll down</span>
           </a>
         </section>
         <div class="hero-stage__spacer" aria-hidden="true"></div>
@@ -170,20 +189,20 @@
                   aria-expanded="false"
                 >
                   <span class="about-info-card__title">Education</span>
-                  <strong>4th Year Aerospace Undergraduate</strong>
-                  <span class="about-info-card__summary">IOE Pulchowk Campus</span>
+                  <strong>School Leaving Certificate</strong>
+                  <span class="about-info-card__summary">GPA: 3.08/4.00 · 2079 B.S.</span>
                   <span class="about-info-card__arrow" aria-hidden="true">↗</span>
                 </button>
                 <button
                   class="about-info-card"
                   type="button"
-                  data-about-card="currently"
+                  data-about-card="experience"
                   aria-controls="about-expanded-content"
                   aria-expanded="false"
                 >
-                  <span class="about-info-card__title">Currently</span>
-                  <strong>Student</strong>
-                  <span class="about-info-card__summary">Looking for opportunities</span>
+                  <span class="about-info-card__title">Experience</span>
+                  <strong>Design, research &amp; UI/UX</strong>
+                  <span class="about-info-card__summary">Experience, leadership &amp; activities</span>
                   <span class="about-info-card__arrow" aria-hidden="true">↗</span>
                 </button>
                 <button
@@ -194,7 +213,7 @@
                   aria-expanded="false"
                 >
                   <span class="about-info-card__title">Skills</span>
-                  <strong>CAD &amp; Graphics</strong>
+                  <strong>Engineering &amp; design</strong>
                   <span class="about-info-card__summary">Explore more skills</span>
                   <span class="about-info-card__arrow" aria-hidden="true">↗</span>
                 </button>
@@ -206,8 +225,8 @@
                   aria-expanded="false"
                 >
                   <span class="about-info-card__title">Interests</span>
-                  <strong>Aircraft &amp; Spacecraft</strong>
-                  <span class="about-info-card__summary">Explore more interests</span>
+                  <strong>Aeronautics &amp; spaceflight</strong>
+                  <span class="about-info-card__summary">Research, data &amp; design</span>
                   <span class="about-info-card__arrow" aria-hidden="true">↗</span>
                 </button>
               </nav>
@@ -226,16 +245,6 @@
             <h2 id="projects-title">Project &amp; Works</h2>
             <div class="projects-section__subline">
               <h3>Selected explorations</h3>
-              <div class="project-progress" aria-label="Choose a project">
-                <button
-                  class="is-active"
-                  type="button"
-                  aria-label="Show project 1"
-                  aria-current="true"
-                ></button>
-                <button type="button" aria-label="Show project 2"></button>
-                <button type="button" aria-label="Show project 3"></button>
-              </div>
             </div>
             <p class="projects-section__intro">
               Aerospace thinking, digital craft, and the ideas in between.
@@ -324,6 +333,16 @@
                 </a>
               </div>
             </article>
+          </div>
+          <div class="project-progress" aria-label="Choose a project">
+            <button
+              class="is-active"
+              type="button"
+              aria-label="Show project 1"
+              aria-current="true"
+            ></button>
+            <button type="button" aria-label="Show project 2"></button>
+            <button type="button" aria-label="Show project 3"></button>
           </div>
         </div>
       </section>

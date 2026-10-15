@@ -141,45 +141,58 @@
       cards: [
 
         {
-
-          title: "Current study",
-
-          description: "4th Year Aerospace Engineering Undergraduate",
-
+          title: "Bachelor in Aerospace Engineering",
+          description: "IOE Pulchowk Campus, Tribhuvan University | 2079 B.S.–Present",
         },
 
         {
+          title: "School Leaving Certificate",
+          description: "Kathmandu Model Secondary School, Balkumari, Lalitpur | 2079 B.S. | GPA: 3.08/4.00",
+        },
 
-          title: "Campus",
-
-          description: "IOE Pulchowk Campus",
-
+        {
+          title: "Secondary Education Examination",
+          description: "N.K. Singh Memorial E.P.S. Secondary School, Minbhawan, Kathmandu | 2076 B.S. | GPA: 3.65/4.00",
         },
 
       ],
 
     },
 
-    currently: {
+    experience: {
 
-      title: "Currently",
+      title: "Experience & Leadership",
 
       cards: [
 
         {
-
-          title: "Current role",
-
-          description: "Aerospace Engineering student",
-
+          title: "Designer (Graphic and UI/UX) — Brind Tech",
+          description: "Dec 2025–May 2026. Created visual and interface designs for digital products and brand communication.",
         },
 
         {
+          title: "Satellite Research Intern — NAST Satellite Research Centre (SRC)",
+          description: "Contributing to CubeSat development and satellite-tracking software designed to send commands to a physical antenna.",
+        },
 
-          title: "Open to",
+        {
+          title: "UI/UX Intern — CodSoft, India (Remote)",
+          description: "Jan–Feb 2024. Completed practical design assignments focused on user-centered interface concepts.",
+        },
 
-          description: "Relevant opportunities, collaboration, and new challenges.",
+        {
+          title: "SEDS Nepal — Secretary",
+          description: "Currently serving as Secretary.",
+        },
 
+        {
+          title: "SEDS Pulchowk — Secretary & Outreach Manager",
+          description: "Secretary in 2081 B.S.; Outreach Manager in 2080/81 B.S.",
+        },
+
+        {
+          title: "Leadership activities",
+          description: "Co-hosted the NASA Space Apps Challenge in Kathmandu (NRCC) and organized a CanSat workshop.",
         },
 
       ],
@@ -193,35 +206,28 @@
       cards: [
 
         {
-
-          title: "CAD",
-
-          description: "Computer-aided design for exploring and communicating ideas.",
-
+          title: "Core skills",
+          description: "CAD design; UI/UX and graphic design; aircraft and structural analysis; data analytics and research; communication and outreach.",
         },
 
         {
-
-          title: "Graphics",
-
-          description: "Graphic design and visual composition.",
-
+          title: "Engineering & research software",
+          description: "XFLR5, ANSYS, Google Earth Engine, CATIA, Autodesk Fusion 360, and Blender.",
         },
 
         {
-
-          title: "Web design",
-
-          description: "Modern, responsive websites with attention to detail.",
-
+          title: "Design & productivity tools",
+          description: "Figma, Adobe Photoshop, Microsoft Word, Excel, and PowerPoint.",
         },
 
         {
+          title: "Programming",
+          description: "Basic Python with exploratory data analysis (EDA).",
+        },
 
-          title: "Interactive interfaces",
-
-          description: "Design and development for engaging interfaces.",
-
+        {
+          title: "Languages",
+          description: "Nepali (native), English, and Hindi.",
         },
 
       ],
@@ -235,19 +241,23 @@
       cards: [
 
         {
-
-          title: "Aircraft",
-
-          description: "Flight, aircraft design, and the ideas behind aviation.",
-
+          title: "Aeronautics and UAVs",
+          description: "Aircraft, unmanned aerial vehicles, and aviation.",
         },
 
         {
+          title: "Space and spaceflight",
+          description: "Spacecraft, spaceflight, and aerospace exploration.",
+        },
 
-          title: "Spacecraft",
+        {
+          title: "Data analytics and research",
+          description: "Using analysis and research to explore engineering questions.",
+        },
 
-          description: "Space vehicles and the engineering behind exploration.",
-
+        {
+          title: "Design and branding",
+          description: "Visual design, digital experiences, and brand identity.",
         },
 
       ],
@@ -730,6 +740,48 @@
 
   var heroStage = document.querySelector(".hero-stage");
 
+  var pageProgress = document.querySelector(".page-progress");
+
+  function updatePageProgress() {
+
+    if (!pageProgress) {
+
+      return;
+
+    }
+
+    var documentHeight = Math.max(
+
+      document.documentElement.scrollHeight,
+
+      document.body.scrollHeight
+
+    );
+
+    var maxScroll = documentHeight - window.innerHeight;
+
+    var progress =
+
+      maxScroll > 0 ? Math.min(1, Math.max(0, window.scrollY / maxScroll)) : 0;
+
+    pageProgress.setAttribute("aria-valuenow", String(Math.round(progress * 100)));
+
+    pageProgress.firstElementChild.style.transform =
+
+      "scaleY(" + progress + ")";
+
+  }
+
+
+
+  updatePageProgress();
+
+  window.requestAnimationFrame(updatePageProgress);
+
+  window.addEventListener("pageshow", updatePageProgress);
+
+
+
   function updateHeroScrollState() {
 
     document.body.classList.toggle("has-scrolled", window.scrollY > 2);
@@ -994,6 +1046,8 @@
 
       updateHeroScrollState();
 
+      updatePageProgress();
+
       if (wheelNavigationLocked) {
 
         wheelLockUntil = Date.now() + wheelSettleDelay;
@@ -1030,6 +1084,8 @@
 
     updateActiveNavigation();
 
+    updatePageProgress();
+
   });
 
   if (document.fonts && document.fonts.ready) {
@@ -1041,6 +1097,8 @@
       updateStackedSectionState();
 
       updateActiveNavigation();
+
+      updatePageProgress();
 
     });
 
@@ -1477,4 +1535,3 @@
   updateActiveNavigation();
 
 })();
-
