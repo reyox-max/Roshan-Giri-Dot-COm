@@ -435,15 +435,17 @@ input:focus-visible {
 
   overflow: hidden;
 
-  border: 1px solid rgb(255 255 255 / 18%);
+  border: 1px solid rgb(55 68 210 / 35%);
 
-  border-radius: 20px;
+  border-radius: clamp(16px, 2vw, 24px);
 
   color: #f4f4ff;
 
-  background: #10162d;
+  background: #0a1024;
 
-  box-shadow: 0 24px 80px rgb(0 0 0 / 45%);
+  box-shadow:
+    0 32px 80px rgb(0 0 0 / 55%),
+    0 0 0 1px rgb(55 68 210 / 20%) inset;
 
 }
 
@@ -451,9 +453,11 @@ input:focus-visible {
 
 .cv-viewer::backdrop {
 
-  background: rgb(5 9 24 / 68%);
+  background: rgb(5 9 24 / 78%);
 
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(14px);
+
+  -webkit-backdrop-filter: blur(14px);
 
 }
 
@@ -473,7 +477,7 @@ input:focus-visible {
 
   display: flex;
 
-  min-height: 62px;
+  min-height: 68px;
 
   align-items: center;
 
@@ -481,7 +485,17 @@ input:focus-visible {
 
   gap: 16px;
 
-  padding: 10px 14px 10px 20px;
+  padding: 12px 16px 12px 24px;
+
+  border-bottom: 1px solid rgb(55 68 210 / 28%);
+
+  color: #ffffff;
+
+  background: linear-gradient(
+    135deg,
+    rgb(55 68 210 / 18%) 0%,
+    rgb(10 16 36 / 0%) 60%
+  );
 
 }
 
@@ -491,9 +505,13 @@ input:focus-visible {
 
   margin: 0;
 
-  font-size: 15px;
+  font-family: "Unbounded", Arial, sans-serif;
 
-  font-weight: 600;
+  font-size: clamp(13px, 1.1vw, 16px);
+
+  font-weight: 700;
+
+  letter-spacing: -0.02em;
 
 }
 
@@ -523,21 +541,25 @@ input:focus-visible {
 
   justify-content: center;
 
-  border: 1px solid rgb(255 255 255 / 24%);
+  border: 0;
 
   border-radius: 999px;
 
-  color: #fff;
-
-  background: rgb(255 255 255 / 8%);
-
   font: inherit;
 
-  font-size: 12px;
+  font-size: 13px;
+
+  font-weight: 700;
 
   text-decoration: none;
 
   cursor: pointer;
+
+  transition:
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease,
+    filter 180ms ease;
 
 }
 
@@ -545,7 +567,27 @@ input:focus-visible {
 
 .cv-viewer__download {
 
-  padding: 0 16px;
+  padding: 0 18px;
+
+  color: #ffffff;
+
+  background: #3744d2;
+
+  box-shadow: 0 4px 14px rgb(55 68 210 / 35%);
+
+}
+
+
+
+.cv-viewer__download:hover {
+
+  background: #2935b5;
+
+  box-shadow: 0 6px 18px rgb(55 68 210 / 45%);
+
+  filter: none;
+
+  transform: translateY(-2px);
 
 }
 
@@ -557,9 +599,25 @@ input:focus-visible {
 
   padding: 0;
 
-  font-size: 24px;
+  color: #0a1024;
+
+  background: rgb(255 255 255 / 92%);
+
+  font-size: 22px;
 
   line-height: 1;
+
+}
+
+
+
+.cv-viewer__close:hover {
+
+  background: #ffffff;
+
+  filter: none;
+
+  transform: scale(1.08);
 
 }
 
