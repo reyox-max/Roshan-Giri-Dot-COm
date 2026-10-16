@@ -42,15 +42,37 @@
       </button>
     </header>
 
-    <div
-      class="page-progress"
-      role="progressbar"
-      aria-label="Page scroll progress"
-      aria-valuemin="0"
-      aria-valuemax="100"
-      aria-valuenow="0"
-    >
-      <span aria-hidden="true"></span>
+    <div class="page-progress">
+      <button
+        class="page-progress__arrow page-progress__arrow--top"
+        type="button"
+        aria-label="Scroll to top"
+      >
+        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <path d="m3 10 5-5 5 5" />
+        </svg>
+      </button>
+      <div
+        class="page-progress__track"
+        role="progressbar"
+        aria-label="Page scroll progress"
+        aria-orientation="vertical"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow="0"
+        tabindex="0"
+      >
+        <span aria-hidden="true"></span>
+      </div>
+      <button
+        class="page-progress__arrow page-progress__arrow--bottom"
+        type="button"
+        aria-label="Scroll to bottom"
+      >
+        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <path d="m3 6 5 5 5-5" />
+        </svg>
+      </button>
     </div>
 
     <main>
@@ -58,45 +80,19 @@
         <section class="hero" aria-labelledby="hero-title">
           <div class="hero__scene" aria-hidden="true">
             <img
-              class="hero__sky"
-              data-high-res="assets/background-lowres.png"
-              data-low-res="assets/background-lowres.png"
+              src="assets/New_Background.png"
+              class="hero__image"
               alt=""
               fetchpriority="high"
             />
-            <div class="hero__aircraft-wrap">
-              <img class="hero__aircraft" src="assets/hero-aircraft.png" alt="" />
-            </div>
           </div>
-          <div class="hero__clouds" aria-hidden="true">
-            <img
-              class="hero__cloud hero__cloud--top"
-              src="assets/cloud_top_transparent.png"
-              alt=""
-            />
-            <img
-              class="hero__cloud hero__cloud--mountain-one"
-              src="assets/cloud_transparent1.png"
-              alt=""
-            />
-            <img
-              class="hero__cloud hero__cloud--mountain-two"
-              src="assets/cloud_transparent2.png"
-              alt=""
-            />
-          </div>
+          <div class="hero__fireflies" aria-hidden="true"></div>
           <img
-            class="hero__landscape"
-            data-high-res="assets/ForeGround_LorRes.png"
-            data-low-res="assets/foreground-lowres.png"
+            class="hero__aircraft"
+            src="assets/hero-aircraft.png"
             alt=""
             aria-hidden="true"
-            fetchpriority="high"
           />
-          <div class="hero__shade" aria-hidden="true"></div>
-          <div class="hero__stars" aria-hidden="true">
-            <i></i><i></i><i></i><i></i>
-          </div>
           <div class="hero__copy">
             <p class="hero__hello">Hello, I&apos;m</p>
             <h1 id="hero-title">Roshan Giri</h1>
@@ -123,7 +119,6 @@
               </div>
             </article>
           </div>
-          <div class="hero__fireflies" aria-hidden="true"></div>
           <a
             class="hero__scroll-cue"
             href="#about"

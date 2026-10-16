@@ -742,34 +742,98 @@
 
   var pageProgress = document.querySelector(".page-progress");
 
+  var pageProgressTrack = pageProgress
+    ? pageProgress.querySelector(".page-progress__track")
+    : null;
+
+  function getMaxDocumentScroll() {
+    return Math.max(
+      0,
+      Math.max(
+        document.documentElement.scrollHeight,
+        document.body.scrollHeight
+      ) - window.innerHeight
+    );
+  }
+
   function updatePageProgress() {
 
-    if (!pageProgress) {
+    if (!pageProgressTrack) {
 
       return;
 
     }
 
-    var documentHeight = Math.max(
-
-      document.documentElement.scrollHeight,
-
-      document.body.scrollHeight
-
-    );
-
-    var maxScroll = documentHeight - window.innerHeight;
+    var maxScroll = getMaxDocumentScroll();
 
     var progress =
 
       maxScroll > 0 ? Math.min(1, Math.max(0, window.scrollY / maxScroll)) : 0;
 
-    pageProgress.setAttribute("aria-valuenow", String(Math.round(progress * 100)));
+    pageProgressTrack.setAttribute(
+      "aria-valuenow",
+      String(Math.round(progress * 100))
+    );
 
-    pageProgress.firstElementChild.style.transform =
-
+    pageProgressTrack.firstElementChild.style.transform =
       "scaleY(" + progress + ")";
+  }
 
+  function scrollToDocumentPosition(position) {
+    window.scrollTo({
+      top: position,
+      behavior: reducedMotion && reducedMotion.matches ? "auto" : "smooth",
+    });
+  }
+
+  if (pageProgress) {
+    var scrollTopButton = pageProgress.querySelector(
+      ".page-progress__arrow--top"
+    );
+    var scrollBottomButton = pageProgress.querySelector(
+      ".page-progress__arrow--bottom"
+    );
+
+    scrollTopButton.addEventListener("click", function () {
+      scrollToDocumentPosition(0);
+    });
+
+    scrollBottomButton.addEventListener("click", function () {
+      scrollToDocumentPosition(getMaxDocumentScroll());
+    });
+
+    pageProgressTrack.addEventListener("click", function (event) {
+      var trackBounds = pageProgressTrack.getBoundingClientRect();
+      var progress = Math.min(
+        1,
+        Math.max(0, (event.clientY - trackBounds.top) / trackBounds.height)
+      );
+      scrollToDocumentPosition(getMaxDocumentScroll() * progress);
+    });
+
+    pageProgressTrack.addEventListener("keydown", function (event) {
+      var scrollAmount = window.innerHeight * 0.8;
+      var currentPosition = window.scrollY;
+      var maxScroll = getMaxDocumentScroll();
+      var targetPosition;
+
+      if (event.key === "ArrowDown" || event.key === "PageDown") {
+        targetPosition = currentPosition + scrollAmount;
+      } else if (event.key === "ArrowUp" || event.key === "PageUp") {
+        targetPosition = currentPosition - scrollAmount;
+      } else if (event.key === "Home") {
+        targetPosition = 0;
+      } else if (event.key === "End") {
+        targetPosition = maxScroll;
+      } else {
+        return;
+      }
+
+      event.preventDefault();
+      scrollToDocumentPosition(
+        Math.min(maxScroll, Math.max(0, targetPosition))
+      );
+    });
   }
 
 
